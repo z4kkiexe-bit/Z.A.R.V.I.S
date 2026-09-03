@@ -1,9 +1,18 @@
 import makeWASocket, {
     useMultiFileAuthState,
-    DisconnectReason
+    DisconnectReason,
+    downloadMediaMessage
 } from "@whiskeysockets/baileys";
-
+import { evaluate } from "mathjs"
 import QRCode from "qrcode";
+import { Fetching } from "../Core/Core.js"
+
+
+function setDelay(time) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, time)
+    })
+}
 
 
 async function connectToWhatsApp() {
@@ -15,6 +24,9 @@ async function connectToWhatsApp() {
     const sock = makeWASocket({
         auth: state
     });
+
+    const expressions = ["Sigma😎", "Skibidi😰", "Rizz🤣", "Folk valley🥶", "Mewing🥵"]
+    
 
 
     sock.ev.on("creds.update", saveCreds);
@@ -98,11 +110,17 @@ async function connectToWhatsApp() {
                 continue;
             }
             const conv =  inputMsg.message.conversation;
+            const timestamp = new Date().toLocaleDateString("id-ID", { timezone: "Asia/Jakarta"})
+
             console.log(`Ada pesan masuk...\n${conv ?? "[non-text message]"}` );
             const remoteJid = inputMsg.key.remoteJid;
             
             if (!remoteJid) {
                 continue;
+            }
+            
+            if (inputMsg.key.fromMe) {
+                continue
             }
 
 
@@ -117,13 +135,18 @@ async function connectToWhatsApp() {
                 );
             }
 
-            if (conv?.startsWith("#calc=>")) {
-                const [cmds, args] = conv.split(">")
-                // replace eval sometimes
-                const inputval = String(eval(args))
-                await sock.sendMessage(remoteJid, {
-                    text: inputval
+            if (conv?.startsWith("#cal =>")) {
+                try{
+                    const [cmds, args] = conv.split(">")
+                    const inputval = String(evaluate(args)) 
+                    await sock.sendMessage(remoteJid, {
+                        text: inputval 
                 })
+            } catch(error) {
+                await sock.sendMessage(remoteJid, {
+                    text: "MATH ONLY!!"
+                })
+            }
             }
 
             if (conv?.startsWith("#whoami")) {
@@ -133,19 +156,70 @@ async function connectToWhatsApp() {
                 })
             }
 
-            if (conv?.startsWith("#Help")) {
+            if (conv?.startsWith("#help")) {
                 await sock.sendMessage(remoteJid, {
-                    text:`Available cmds\n#tuff\n#calc=> (Angka + Angka)\n#whoami\n#menu`
+                    text:`Available cmds\n#tuff\n#cal => (angka (operator) angka)\n#whoami\n#menu\n#aura\n#checkName\n#ai => (input)`
                 })
             }
 
-            if (conv?.startsWith("tuff")) {
-                await sock.sendMessage(remoteJid, {
-                    text: "the BIMZ"
+            if (conv?.startsWith("#tuff")) {
+                for (let i = 0; i <= 4; i++) {
+                    const valueInt = await sock.sendMessage(remoteJid, {
+                    text: `${ expressions[i]}`
                     }
                 );
             }
-        }
+            }
+
+            if (conv?.startsWith("#aura")) {
+                const random = Math.floor(Math.random() * expressions.length)
+                await sock.sendMessage(remoteJid, {
+                    text: `${inputMsg.pushName} sangat ${expressions[random]}`
+                })
+            }
+
+            if (conv?.startsWith("#checkName")) {
+                await sock.sendMessage(remoteJid, {
+                    text: `Nama mu: ${inputMsg.pushName}\nNomor: ${remoteJid}\nWaktu: ${timestamp}`
+                })
+            }
+
+            if (conv?.startsWith("#ai =>")) {
+                try{
+                    const [cmds, args] = conv.split(">")
+                    const loadRes = await sock.sendMessage(remoteJid, {
+                            text: "Loading response..."
+                        })
+                    console.time("AI")
+                    const value = await Fetching({
+                        messages: [{
+                            role: "user",
+                            content: args.trim()
+                        }]
+                    })
+                    console.timeEnd("AI")
+
+                    console.time("SEND")
+                    const sendAI = await sock.sendMessage(remoteJid, {
+                        text: `ZARVIS-AI-SERVICES:\n${value}`,
+                    })
+                    console.timeEnd("SEND")
+                    const loadSuccess = await sock.sendMessage(remoteJid, {
+                        text: "Response loaded! ✔",
+                        edit: loadRes.key
+                    })
+                    
+            } catch(error) {
+                await sock.sendMessage(remoteJid, {
+                    text: "REQUEST AI GAGAL"
+                })
+            }
+
+            }
+
+
+            }
+        
     })
 }
 
