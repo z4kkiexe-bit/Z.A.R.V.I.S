@@ -1,11 +1,13 @@
 import makeWASocket, {
     useMultiFileAuthState,
     DisconnectReason,
-    downloadMediaMessage
+    downloadMediaMessage,
+    extractAddressingContext
 } from "@whiskeysockets/baileys";
 import { evaluate } from "mathjs"
 import QRCode from "qrcode";
-import { Fetching } from "../Core/Core.js"
+import { Fetching, extrAudio } from "../Core/Core.js"
+
 
 
 function setDelay(time) {
@@ -214,7 +216,31 @@ async function connectToWhatsApp() {
                     text: "REQUEST AI GAGAL"
                 })
             }
+            }
 
+            if (conv?.startsWith("#audiovert =>")) {
+                console.log("MASUK IF AUDIO")
+                try{
+                    const [, args] = conv.split(">")
+                    const Aud = await extrAudio(args.trim())
+
+                    console.log("Audio type:", Aud.constructor.name)
+                    console.log("Audio size:", Aud.length)
+                    console.log("Audio header:", Aud.subarray(0, 12).toString())
+
+                    const sent = await sock.sendMessage(remoteJid, {
+                        audio: Aud,
+                        mimetype: "audio/ogg; codecs=opus",
+                    })
+                    console.log("HASIL SENT")
+                    console.log(sent)
+                    console.log("AUDIO TERKIRIM")
+                    } catch(error) {
+                        console.error("ERROR FETCHING AUDIO", error)
+                        await sock.sendMessage(remoteJid, {
+                            text: "ERROR FETCHING AUDIO"
+                        })
+                    }
             }
 
 

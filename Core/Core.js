@@ -22,13 +22,24 @@ export async function Fetching(input) {
 
     return response.choices[0].message.content
 }
-/*async function renderRes() {
-    const result = await Fetching({
-            messages: [{
-                role: "user",
-                content: "Haloo, siapa namamu?"
-            }]
+
+
+
+export async function extrAudio(input) {
+    const objjson = {
+        text: input
+    }
+    const res =  await fetch("http://127.0.0.1:5000/tts", {
+        method: "POST",
+        headers: {
+            "Content-Type":"Application/json"
+        },
+        body: JSON.stringify(objjson)
     })
-    console.log(result)
+    console.log("JSON dikirim...")
+
+    const arrBuffer = await res.arrayBuffer()
+    const bufferOut = Buffer.from(arrBuffer)
+
+    return bufferOut
 }
-renderRes()*/
