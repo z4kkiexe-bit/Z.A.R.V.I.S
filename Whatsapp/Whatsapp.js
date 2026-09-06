@@ -6,9 +6,11 @@ import makeWASocket, {
 } from "@whiskeysockets/baileys";
 import { evaluate } from "mathjs"
 import QRCode from "qrcode";
-import { Fetching, extrAudio } from "../Core/Core.js"
+import { Fetching, extrAudio, playAudio } from "../Core/Core.js"
 
 
+const expressions = ["Sigma😎", "Skibidi😰", "Rizz🤣", "Folk valley🥶", "Mewing🥵"]
+const myJid = "241394962710673@lid"
 
 function setDelay(time) {
     return new Promise((resolve) => {
@@ -26,9 +28,6 @@ async function connectToWhatsApp() {
     const sock = makeWASocket({
         auth: state
     });
-
-    const expressions = ["Sigma😎", "Skibidi😰", "Rizz🤣", "Folk valley🥶", "Mewing🥵"]
-    
 
 
     sock.ev.on("creds.update", saveCreds);
@@ -90,6 +89,10 @@ async function connectToWhatsApp() {
 
         if (connection === "close") {
             const statusCode = lastDisconnect?.error?.output?.statusCode;
+
+            console.log("WhatsApp connection closed.");
+            console.log("Status code:", statusCode);
+
             const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
 
             console.log("WhatsApp connection closed.");
@@ -116,6 +119,7 @@ async function connectToWhatsApp() {
 
             console.log(`Ada pesan masuk...\n${conv ?? "[non-text message]"}` );
             const remoteJid = inputMsg.key.remoteJid;
+            console.log(remoteJid)
             
             if (!remoteJid) {
                 continue;
@@ -160,7 +164,7 @@ async function connectToWhatsApp() {
 
             if (conv?.startsWith("#help")) {
                 await sock.sendMessage(remoteJid, {
-                    text:`Available cmds\n#tuff\n#cal => (angka (operator) angka)\n#whoami\n#menu\n#aura\n#checkName\n#ai => (input)`
+                    text:`Available cmds\n#tuff\n#cal => (angka (operator) angka)\n#whoami\n#menu\n#aura\n#checkName\n#ai => (input)\n#audiovert => (Teks yang ingin konversi)\n#narrator => (teks)`
                 })
             }
 
@@ -205,6 +209,9 @@ async function connectToWhatsApp() {
                     const sendAI = await sock.sendMessage(remoteJid, {
                         text: `ZARVIS-AI-SERVICES:\n${value}`,
                     })
+                    const audData = await extrAudio(value)
+                    await playAudio(audData)
+
                     console.timeEnd("SEND")
                     const loadSuccess = await sock.sendMessage(remoteJid, {
                         text: "Response loaded! ✔",
@@ -241,13 +248,20 @@ async function connectToWhatsApp() {
                             text: "ERROR FETCHING AUDIO"
                         })
                     }
-            }
+                }
+            
 
-
+            if (conv?.startsWith("#narrator =>")) {
+                const [, args] = conv.split(">")
+                const narrValInput = await extrAudio(args.trim())
+                await playAudio(narrValInput)
+                await sock.sendMessage(remoteJid, {
+                    text: args
+                })
             }
-        
+        }
+
     })
+// BAGIAN LOGIC TANPA MSG UPSERT / LOGIC SECTION WITHOUT MSG UPSERT
 }
-
-
-connectToWhatsApp();
+connectToWhatsApp()
