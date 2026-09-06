@@ -26,4 +26,4 @@ Speaker
 
 The project is designed around separate services, with **Node.js acting as the core/orchestrator** and **Python handling voice-related processing**.
 
-ZARVIS is currently a work in progress and serves as a long-term personal assistant project exploring local AI, voice interaction, automation, and hardware integration.
+ZARVIS is currently BETA as a long-term personal assistant project exploring local AI, voice interaction, automation, and hardware integration.
