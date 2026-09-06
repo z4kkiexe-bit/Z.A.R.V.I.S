@@ -3,7 +3,9 @@
 
 <p>
   <img src="https://cdn.simpleicons.org/node.js" width="40">
+  &nbsp;&nbsp;
   <img src="https://cdn.simpleicons.org/javascript" width="40">
+  &nbsp;&nbsp;
   <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" width="120" alt="Python">
 </p>
 
