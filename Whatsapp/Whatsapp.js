@@ -197,12 +197,7 @@ async function connectToWhatsApp() {
                             text: "Loading response..."
                         })
                     console.time("AI")
-                    const value = await Fetching({
-                        messages: [{
-                            role: "user",
-                            content: args.trim()
-                        }]
-                    })
+                    const value = await Fetching(args.trim())
                     console.timeEnd("AI")
 
                     console.time("SEND")

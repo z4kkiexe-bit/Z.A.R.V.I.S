@@ -1,6 +1,7 @@
 import "../Whatsapp/Whatsapp.js"
 import express from "express"
 import { spawn } from "child_process" 
+import "dotenv/config"
 
 
 const app = express()
@@ -40,18 +41,25 @@ export async function Fetching(input) {
             model: "openrouter/free",
             messages: [
                 {
+                    role: "system",
+                    content: process.env.AI_SYSTEM_PROMPT
+                },
+                {
                     role: "user",
-                    content: input
+                    content: input 
                 }
             ]
         })
     })
-
+    console.log(process.env.OPENROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBAACA")
     const response = await fetchVal.json()
+    console.log("STATUS:", fetchVal.status)
+    console.log("OK:", fetchVal.ok)
 
-    return response.choices[0].message.content
+
+    return response.choices?.[0]?.message?.content
 }
-
+Fetching("Hallo ai")
 
 
 export async function extrAudio(input) {
@@ -104,12 +112,7 @@ export function playAudio(buffer) {
 }
 
 async function sttToAi() {
-    const sttInputAi = await Fetching({
-        messages: [{ 
-            role: "user", 
-            content: resSTT
-        }]
-    })
+    const sttInputAi = await Fetching(resSTT)
     
     const sttOutputAi = await extrAudio(sttInputAi)
     await playAudio(sttOutputAi)

@@ -11,6 +11,9 @@ FFMPEG = r"C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Mic
 @app.route("/tts", methods=["POST"])
 def tts():
     data = request.get_json()
+
+    print("DATA MASUK:", data)
+
     text = data["text"]
 
     
