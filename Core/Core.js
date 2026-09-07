@@ -14,6 +14,7 @@ async function coreHamdler() {
         //await playAudio(resAudConvert)
         console.log(resSTT)
         sttToAi()
+        console.log("AI Prepare...")
         res.sendStatus(200)
     })
 }
