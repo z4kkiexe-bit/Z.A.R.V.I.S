@@ -30,17 +30,26 @@ app.listen(3000, () => {
 
 // AI activation cmds >> .\llama-server.exe -m "C:\Users\User\Desktop\ZARVIS\LLM\LLM Models\qwen2.5-1.5b-instruct-q4_k_m.gguf" --host 127.0.0.1 --port 8081
 export async function Fetching(input) {
-    const fetchVal = await fetch("http://127.0.0.1:8081/v1/chat/completions", {
+    const fetchVal = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
+            "Authorization":`Bearer ${process.env.OPENROUTER_API_KEY}`,
             "Content-Type":"Application/json"
         },
-        body:JSON.stringify(input)
+        body:JSON.stringify({
+            model: "openrouter/free",
+            messages: [
+                {
+                    role: "user",
+                    content: input
+                }
+            ]
+        })
     })
 
     const response = await fetchVal.json()
 
-    return response.choices[0]?.message?.content
+    return response.choices[0].message.content
 }
 
 
