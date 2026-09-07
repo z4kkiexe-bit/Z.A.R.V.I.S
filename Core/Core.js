@@ -1,9 +1,6 @@
 import "../Whatsapp/Whatsapp.js"
 import express from "express"
 import { spawn } from "child_process" 
-import { resolve } from "dns";
-import { rejects } from "assert";
-import { error } from "console";
 
 
 const app = express()
@@ -13,13 +10,21 @@ async function coreHamdler() {
     app.use(express.json())
     app.post("/stt", async (req, res) => {
         resSTT = req.body.text
-        const resAudConvert = await extrAudio(resSTT)
-        await playAudio(resAudConvert)
+        //const resAudConvert = await extrAudio(resSTT)
+        //await playAudio(resAudConvert)
         console.log(resSTT)
+        sttToAi()
         res.sendStatus(200)
     })
 }
 coreHamdler()
+
+app.listen(3000, () => {
+    console.log("ZARVIS server running on port 3000...")
+})
+
+
+
 
 // AI activation cmds >> .\llama-server.exe -m "C:\Users\User\Desktop\ZARVIS\LLM\LLM Models\qwen2.5-1.5b-instruct-q4_k_m.gguf" --host 127.0.0.1 --port 8081
 export async function Fetching(input) {
@@ -33,7 +38,7 @@ export async function Fetching(input) {
 
     const response = await fetchVal.json()
 
-    return response.choices[0].message.content
+    return response.choices[0]?.message?.content
 }
 
 
@@ -57,9 +62,6 @@ export async function extrAudio(input) {
     return bufferOut
 }
 
-
-
-//NON FUNCTION BASE LOGIC / LOGIC YANG TIDAK BERBASIS FUCTION
 
 
 export function playAudio(buffer) {
@@ -90,8 +92,14 @@ export function playAudio(buffer) {
     })
 }
 
-app.listen(3000, () => {
-    console.log("ZARVIS server running on port 3000...")
-})
-
-
+async function sttToAi() {
+    const sttInputAi = await Fetching({
+        messages: [{ 
+            role: "user", 
+            content: resSTT
+        }]
+    })
+    
+    const sttOutputAi = await extrAudio(sttInputAi)
+    await playAudio(sttOutputAi)
+}
