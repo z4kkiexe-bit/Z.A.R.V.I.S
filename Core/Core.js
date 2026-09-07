@@ -16,6 +16,7 @@ async function coreHamdler() {
         sttToAi()
         console.log("AI Prepare...")
         res.sendStatus(200)
+        console.log("SUCCESS...")
     })
 }
 coreHamdler()
