@@ -14,7 +14,8 @@ async function coreHamdler() {
         //const resAudConvert = await extrAudio(resSTT)
         //await playAudio(resAudConvert)
         console.log(resSTT)
-        sttToAi()
+        // Change the method as needed at STT obj
+        STT.sttToAiNoAud()
         console.log("AI Prepare...")
         res.sendStatus(200)
         console.log("SUCCESS...")
@@ -56,10 +57,13 @@ export async function Fetching(input) {
     console.log("STATUS:", fetchVal.status)
     console.log("OK:", fetchVal.ok)
 
+    const content = response.choices?.[0]?.message?.content
 
-    return response.choices?.[0]?.message?.content
+    console.log("AI RAW:", content)
+
+    return content
 }
-Fetching("Hallo ai")
+
 
 
 export async function extrAudio(input) {
@@ -110,10 +114,77 @@ export function playAudio(buffer) {
 
     })
 }
+const STT = {
+    async sttToAi() {
+        const sttInputAi = await Fetching(resSTT)
+        
+        const sttOutputAi = await extrAudio(sttInputAi)
+        await playAudio(sttOutputAi)
+    },
 
-async function sttToAi() {
-    const sttInputAi = await Fetching(resSTT)
-    
-    const sttOutputAi = await extrAudio(sttInputAi)
-    await playAudio(sttOutputAi)
+    async sttToAiNoAud() {
+        const sttInputAi = resSTT.toLowerCase()
+        const arrMusic = [
+            {
+                Megalovania: "https://youtu.be/63cYJbgwkoQ"
+            },
+            {
+                NASA: "https://youtu.be/JL7ScHIyQ38"
+            },
+            {
+                ForgetMeNot: "https://youtu.be/ojniEg2IcgE"
+            },
+            {
+                FallFromSky: "https://youtu.be/HCD_0v1V7tQ"
+            },
+            {
+                StepUp: "https://youtu.be/uAD5E1lqmXw"
+            }
+        ]
+        
+        if (sttInputAi.includes("nia")) {
+            const templateRes = await extrAudio("Siap, lagu akan diputar!")
+            await playAudio(templateRes)
+            playMusic(arrMusic[0].Megalovania)
+        }
+        if (sttInputAi.includes("anymore")) {
+            const templateRes = await extrAudio("Siap, lagu akan diputar!")
+            await playAudio(templateRes)
+            playMusic(arrMusic[1].NASA)
+        }
+        if (sttInputAi.includes("forget")) {
+            const templateRes = await extrAudio("Siap, lagu akan diputar!")
+            await playAudio(templateRes)
+            playMusic(arrMusic[2].ForgetMeNot)
+        }
+        if (sttInputAi.includes("fall")) {
+            const templateRes = await extrAudio("Siap, lagu akan diputar!")
+            await playAudio(templateRes)
+            playMusic(arrMusic[3].FallFromSky)
+        }
+        if (sttInputAi.includes("step")) {
+            const templateRes = await extrAudio("Siap, lagu akan diputar!")
+            await playAudio(templateRes)
+            playMusic(arrMusic[4].StepUp)
+        }
+    }
 }
+function playMusic(url) {
+    const yt = spawn("yt-dlp", [
+        "-f", "bestaudio",
+        "-o", "-",
+        url
+    ])
+
+    const player = spawn("ffplay", [
+        "-nodisp", 
+        "-autoexit",
+        "-"
+    ])
+
+    yt.stdout.pipe(player.stdin)
+    player.stderr.on("data", (data) => {
+        process.stdout.write(data)
+    })
+    }
+
