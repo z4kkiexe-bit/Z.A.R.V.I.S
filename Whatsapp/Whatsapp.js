@@ -196,22 +196,22 @@ async function connectToWhatsApp() {
                     const loadRes = await sock.sendMessage(remoteJid, {
                             text: "Loading response..."
                         })
-                    console.time("AI")
                     const value = await Fetching(args.trim())
-                    console.timeEnd("AI")
 
-                    console.time("SEND")
                     const sendAI = await sock.sendMessage(remoteJid, {
                         text: `ZARVIS-AI-SERVICES:\n${value}`,
                     })
                     const audData = await extrAudio(value)
                     await playAudio(audData)
-
-                    console.timeEnd("SEND")
-                    const loadSuccess = await sock.sendMessage(remoteJid, {
-                        text: "Response loaded! ✔",
-                        edit: loadRes.key
-                    })
+                    try{
+                        const loadSuccess = await sock.sendMessage(remoteJid, {
+                            text: "Response loaded! ✔",
+                            edit: loadRes.key
+                        })
+                    } catch(error) {
+                        console.error("Gagal edit loading", error)
+                    }
+                    
                     
             } catch(error) {
                 await sock.sendMessage(remoteJid, {
