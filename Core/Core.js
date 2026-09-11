@@ -52,7 +52,7 @@ export async function Fetching(input) {
             ]
         })
     })
-    console.log(process.env.OPENROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBAACA")
+    console.log(process.env.OPENROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBACA")
     const response = await fetchVal.json()
     console.log("STATUS:", fetchVal.status)
     console.log("OK:", fetchVal.ok)
@@ -135,7 +135,7 @@ const STT = {
                 ForgetMeNot: "https://youtu.be/ojniEg2IcgE"
             },
             {
-                FallFromSky: "https://youtu.be/HCD_0v1V7tQ"
+                FallFromSky: "https://youtu.be/Kqmzbpa7_6w"
             },
             {
                 StepUp: "https://youtu.be/uAD5E1lqmXw"
