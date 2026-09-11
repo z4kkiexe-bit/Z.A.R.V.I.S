@@ -203,6 +203,7 @@ async function connectToWhatsApp() {
                     })
                     const audData = await extrAudio(value)
                     await playAudio(audData)
+                    console.log("SEBELUM EDIT...")
                     try{
                         const loadSuccess = await sock.sendMessage(remoteJid, {
                             text: "Response loaded! ✔",
@@ -211,7 +212,7 @@ async function connectToWhatsApp() {
                     } catch(error) {
                         console.error("Gagal edit loading", error)
                     }
-                    
+                    console.log("SETELAH EDIT...")
                     
             } catch(error) {
                 await sock.sendMessage(remoteJid, {
