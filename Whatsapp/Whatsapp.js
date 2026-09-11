@@ -201,8 +201,8 @@ async function connectToWhatsApp() {
                     const sendAI = await sock.sendMessage(remoteJid, {
                         text: `ZARVIS-AI-SERVICES:\n${value}`,
                     })
-                    const audData = await extrAudio(value)
-                    await playAudio(audData)
+                    //const audData = await extrAudio(value)
+                    //await playAudio(audData)
                     console.log("SEBELUM EDIT...")
                     try{
                         const loadSuccess = await sock.sendMessage(remoteJid, {
