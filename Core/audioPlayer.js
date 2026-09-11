@@ -5,7 +5,7 @@ export const STT = {
         const sttInputAi = await Fetching(resSTT)
         
         const sttOutputAi = await extrAudio(sttInputAi)
-        await playAudio(sttOutputAi)
+        await playAudioTTS(sttOutputAi)
     },
 
     async sttToMusic() {
