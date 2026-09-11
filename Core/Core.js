@@ -70,7 +70,7 @@ export async function extrAudio(input) {
     const objjson = {
         text: input
     }
-    const res =  await fetch("http://127.0.0.1:5000/tts", {
+    const res =  await fetch("http://192.168.1.9:5000/tts", {
         method: "POST",
         headers: {
             "Content-Type":"Application/json"

@@ -64,7 +64,7 @@ while True:
     valueWhisper = runSTT()
 
     requests.post(
-        "http://127.0.0.1:3000/stt",
+        "http://192.168.1.8:3000/stt",
         json={
             "text": valueWhisper
         }
