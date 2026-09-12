@@ -10,6 +10,7 @@ const FFPLAY = "C:\\Users\\User\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gy
 async function coreHamdler() {
     app.use(express.json())
     app.post("/stt", async (req, res) => {
+        console.log("RESTT BELUM MENERIMA DATA...")
         resSTT = req.body.text
         //const resAudConvert = await extrAudio(resSTT)
         //await playAudio(resAudConvert)
