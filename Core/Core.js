@@ -1,4 +1,4 @@
-import "../Whatsapp/Whatsapp.js"
+
 import express from "express"
 import { spawn } from "child_process" 
 import "dotenv/config"
