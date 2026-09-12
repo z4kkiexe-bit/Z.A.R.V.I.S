@@ -41,7 +41,7 @@ coreHamdler()
 app.listen(3000, () => {
     console.log("ZARVIS server running on port 3000...")
 })
-
+console.log("SETELAH APP.LISTEN...")
 
 
 
