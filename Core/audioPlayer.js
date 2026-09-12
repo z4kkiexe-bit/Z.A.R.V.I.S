@@ -1,4 +1,3 @@
-import { extrAudio, playMusic, playAudioTTS,  Fetching } from "./Core.js";
 import express from "express"
 
 let resSTT;
@@ -11,6 +10,111 @@ app.post("/audioPlayerPC", async (req, res) => {
 app.listen(3555, () => {
     console.log("Audioplayer is running on port 3555...")
 })
+
+async function Fetching(input) {
+    const fetchVal = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+            "Authorization":`Bearer ${process.env.OPENROUTER_API_KEY}`,
+            "Content-Type":"Application/json"
+        },
+        body:JSON.stringify({
+            model: "openrouter/free",
+            messages: [
+                {
+                    role: "system",
+                    content: process.env.AI_SYSTEM_PROMPT
+                },
+                {
+                    role: "user",
+                    content: input 
+                }
+            ]
+        })
+    })
+    console.log(process.env.OPENROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBACA")
+    const response = await fetchVal.json()
+    console.log("STATUS:", fetchVal.status)
+    console.log("OK:", fetchVal.ok)
+
+    const content = response.choices?.[0]?.message?.content
+
+    console.log("AI RAW:", content)
+
+    return content
+}
+
+async function extrAudio(input) {
+    const objjson = {
+        text: input
+    }
+    const res =  await fetch("http://192.168.1.9:5000/tts", {
+        method: "POST",
+        headers: {
+            "Content-Type":"Application/json"
+        },
+        body: JSON.stringify(objjson)
+    })
+    console.log("JSON dikirim...")
+
+    const arrBuffer = await res.arrayBuffer()
+    const bufferOut = Buffer.from(arrBuffer)
+
+    return bufferOut
+}
+
+
+
+export function playAudioTTS(buffer) {
+    return new Promise((resolve, reject) => {
+        const player = spawn(FFPLAY, [
+            "-nodisp",
+            "-autoexit",
+            "-i",
+            "pipe:0"
+        ])
+
+        player.stderr.on("data", (data) => {
+            console.log("FFPLAY:", data.toString())
+        })
+
+        player.on("error", reject)
+        player.stdin.on("error", reject)
+        player.stdin.end(buffer)
+
+        player.on("close", (code) => {
+            if (code === 0) {
+                resolve()
+            } else {
+                reject(new Error(`ffplay exited with code:${code}` ))
+            }
+        })
+
+    })
+}
+
+
+function playMusic(url) {
+    const yt = spawn("yt-dlp", [
+        "-f", "bestaudio",
+        "-o", "-",
+        url
+    ])
+
+    const player = spawn("ffplay", [
+        "-nodisp", 
+        "-autoexit",
+        "-"
+    ])
+
+    yt.stdout.pipe(player.stdin)
+    player.stderr.on("data", (data) => {
+        process.stdout.write(data)
+    })
+}
+
+
+
 export const STT = {
     async sttToAi() {
         const sttInputAi = await Fetching(resSTT)

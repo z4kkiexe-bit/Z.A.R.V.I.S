@@ -140,5 +140,5 @@ export function playMusic(url) {
     player.stderr.on("data", (data) => {
         process.stdout.write(data)
     })
-    }
+}
 
