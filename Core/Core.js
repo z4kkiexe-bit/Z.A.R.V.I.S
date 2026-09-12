@@ -38,6 +38,17 @@ async function coreHamdler() {
 }
 coreHamdler()
 
+setInterval(() => {
+    console.log("STILL ALIVE")
+}, 1000)
+
+app.listen(3000, () => {
+    console.log("ZARVIS server running on port 3000...")
+})
+
+console.log("SETELAH APP.LISTEN...")
+
+
 app.listen(3000, () => {
     console.log("ZARVIS server running on port 3000...")
 })
