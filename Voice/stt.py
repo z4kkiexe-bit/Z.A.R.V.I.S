@@ -62,10 +62,11 @@ def runSTT():
 
 while True:
     valueWhisper = runSTT()
-
-    requests.post(
+    print("STT selesai, POST...")
+    response = requests.post(
         "http://192.168.1.8:3000/stt",
         json={
             "text": valueWhisper
         }
     )
+    print("POST selesai", response.status_code)

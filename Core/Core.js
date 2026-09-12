@@ -13,6 +13,8 @@ async function coreHamdler() {
         resSTT = req.body.text
         //const resAudConvert = await extrAudio(resSTT)
         //await playAudio(resAudConvert)
+        console.log("data terkirim...")
+        res.sendStatus(200)
         console.log(resSTT)
         const resToAudioPlayer = await fetch("http://192.168.1.9:3555/audioPlayerPC", {
             method: "POST",
@@ -23,9 +25,6 @@ async function coreHamdler() {
                 text: resSTT
             })
         })
-        // Change the method as needed at STT obj
-        console.log("AI Prepare...")
-        res.sendStatus(200)
         console.log("SUCCESS...")
     })
 }
