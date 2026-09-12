@@ -6,7 +6,7 @@ import makeWASocket, {
 } from "@whiskeysockets/baileys";
 import { evaluate } from "mathjs"
 import QRCode from "qrcode";
-import { Fetching, extrAudio, playAudio } from "../Core/Core.js"
+import { Fetching, extrAudio, playAudioTTS } from "../Core/Core.js"
 
 
 const expressions = ["Sigma😎", "Skibidi😰", "Rizz🤣", "Folk valley🥶", "Mewing🥵"]
