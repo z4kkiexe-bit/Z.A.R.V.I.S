@@ -1,5 +1,16 @@
-import { extrAudio, playMusic, playAudioTTS, resSTT, Fetching } from "./Core.js";
+import { extrAudio, playMusic, playAudioTTS,  Fetching } from "./Core.js";
+import express from "express"
 
+let resSTT;
+const app = express()
+app.use(express.json())
+app.post("/audioPlayerPC", async (req, res) => {
+    resSTT = req.body.text
+    res.sendStatus(200)
+})
+app.listen(3555, () => {
+    console.log("Audioplayer is running on port 3555...")
+})
 export const STT = {
     async sttToAi() {
         const sttInputAi = await Fetching(resSTT)
@@ -28,7 +39,7 @@ export const STT = {
             }
         ]
         
-        if (sttInputA?.includes("nia")) {
+        if (sttInputAi?.includes("nia")) {
             const templateRes = await extrAudio("Siap, lagu akan diputar!")
             await playAudioTTS(templateRes)
             playMusic(arrMusic[0].Megalovania)

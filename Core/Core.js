@@ -14,6 +14,15 @@ async function coreHamdler() {
         //const resAudConvert = await extrAudio(resSTT)
         //await playAudio(resAudConvert)
         console.log(resSTT)
+        const resToAudioPlayer = await fetch("http://192.168.1.9:3555/audioPlayerPC", {
+            method: "POST",
+            headers: {
+                "Content-Type":"Application/json"
+            },
+            body:JSON.stringify({
+                text: resSTT
+            })
+        })
         // Change the method as needed at STT obj
         console.log("AI Prepare...")
         res.sendStatus(200)
