@@ -9,7 +9,7 @@ export const STT = {
     },
 
     async sttToMusic() {
-        const sttInputAi = resSTT.toLowerCase()
+        const sttInputAi = resSTT?.toLowerCase()
         const arrMusic = [
             {
                 Megalovania: "https://youtu.be/63cYJbgwkoQ"
