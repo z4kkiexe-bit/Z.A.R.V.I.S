@@ -28,27 +28,27 @@ export const STT = {
             }
         ]
         
-        if (sttInputAi.includes("nia")) {
+        if (sttInputA?.includes("nia")) {
             const templateRes = await extrAudio("Siap, lagu akan diputar!")
             await playAudioTTS(templateRes)
             playMusic(arrMusic[0].Megalovania)
         }
-        if (sttInputAi.includes("anymore")) {
+        if (sttInputAi?.includes("anymore")) {
             const templateRes = await extrAudio("Siap, lagu akan diputar!")
             await playAudioTTS(templateRes)
             playMusic(arrMusic[1].NASA)
         }
-        if (sttInputAi.includes("forget")) {
+        if (sttInputAi?.includes("forget")) {
             const templateRes = await extrAudio("Siap, lagu akan diputar!")
             await playAudioTTS(templateRes)
             playMusic(arrMusic[2].ForgetMeNot)
         }
-        if (sttInputAi.includes("fall")) {
+        if (sttInputAi?.includes("fall")) {
             const templateRes = await extrAudio("Siap, lagu akan diputar!")
             await playAudioTTS(templateRes)
             playMusic(arrMusic[3].FallFromSky)
         }
-        if (sttInputAi.includes("step")) {
+        if (sttInputAi?.includes("step")) {
             const templateRes = await extrAudio("Siap, lagu akan diputar!")
             await playAudioTTS(templateRes)
             playMusic(arrMusic[4].StepUp)
