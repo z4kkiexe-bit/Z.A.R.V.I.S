@@ -133,3 +133,4 @@ export function playMusic(url) {
     })
     }
 
+STT.sttToMusic()
