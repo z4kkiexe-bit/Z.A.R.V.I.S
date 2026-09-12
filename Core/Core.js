@@ -42,6 +42,20 @@ app.listen(3000, () => {
     console.log("ZARVIS server running on port 3000...")
 })
 
+
+server.on("close", () => {
+    console.log("SERVER CLOSED")
+})
+
+process.on("beforeExit", code => {
+    console.log("BEFORE EXIT:", code)
+})
+
+process.on("exit", code => {
+    console.log("EXIT:", code)
+})
+
+
 console.log("SETELAH APP.LISTEN...")
 
 
