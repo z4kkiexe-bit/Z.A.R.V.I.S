@@ -13,10 +13,12 @@ async function coreHamdler() {
         resSTT = req.body.text
         //const resAudConvert = await extrAudio(resSTT)
         //await playAudio(resAudConvert)
+        console.log(resSTT)
         console.log("data terkirim...")
         res.sendStatus(200)
-        console.log(resSTT)
-        const resToAudioPlayer = await fetch("http://192.168.1.9:3555/audioPlayerPC", {
+        console.log(" Kirim ke audioplayer...")
+        try{
+            const resToAudioPlayer = await fetch("http://192.168.1.9:3555/audioPlayerPC", {
             method: "POST",
             headers: {
                 "Content-Type":"Application/json"
@@ -25,6 +27,11 @@ async function coreHamdler() {
                 text: resSTT
             })
         })
+        console.log("audioplayer res", resToAudioPlayer.status)
+    } catch(error) {
+        console.error("audioplayer ERROR", error.message)
+    }
+        
         console.log("SUCCESS...")
     })
 }
