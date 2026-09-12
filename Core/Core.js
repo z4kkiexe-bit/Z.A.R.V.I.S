@@ -38,22 +38,11 @@ async function coreHamdler() {
 }
 coreHamdler()
 
-setInterval(() => {
-    console.log("STILL ALIVE")
-}, 1000)
-
 app.listen(3000, () => {
     console.log("ZARVIS server running on port 3000...")
 })
 
 console.log("SETELAH APP.LISTEN...")
-
-
-app.listen(3000, () => {
-    console.log("ZARVIS server running on port 3000...")
-})
-console.log("SETELAH APP.LISTEN...")
-
 
 
 // AI activation cmds >> .\llama-server.exe -m "C:\Users\User\Desktop\ZARVIS\LLM\LLM Models\qwen2.5-1.5b-instruct-q4_k_m.gguf" --host 127.0.0.1 --port 8081
