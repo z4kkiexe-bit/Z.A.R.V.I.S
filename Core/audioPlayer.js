@@ -1,10 +1,12 @@
 import express from "express"
+import { spawn } from "child_process"
 
 let resSTT;
 const app = express()
 app.use(express.json())
 app.post("/audioPlayerPC", async (req, res) => {
     resSTT = req.body.text
+    STT.sttToMusic()
     res.sendStatus(200)
 })
 app.listen(3555, () => {
@@ -170,4 +172,3 @@ export const STT = {
         }
     }
 }
-STT.sttToMusic()
