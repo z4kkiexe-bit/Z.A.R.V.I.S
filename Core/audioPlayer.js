@@ -1,4 +1,4 @@
-import { extrAudio, playMusic, playAudioTTS, resSTT, Fetching } from "./Core";
+import { extrAudio, playMusic, playAudioTTS, resSTT, Fetching } from "./Core.js";
 
 export const STT = {
     async sttToAi() {
