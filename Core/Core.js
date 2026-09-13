@@ -6,6 +6,8 @@ import "../Whatsapp/Whatsapp.js"
 let server;
 const app = express()
 export let resSTT;
+const FFPLAY = "C:\\Users\\User\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffplay.exe"
+let resSTT;
 
 async function coreHamdler() {
     app.use(express.json())
