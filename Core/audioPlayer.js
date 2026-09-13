@@ -1,6 +1,7 @@
 import express from "express"
 import { spawn } from "child_process"
 
+const FFPLAY = "C:\\Users\\User\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffplay.exe"
 let resSTT;
 const app = express()
 app.use(express.json())
@@ -9,9 +10,7 @@ app.post("/audioPlayerPC", async (req, res) => {
     STT.sttToMusic()
     res.sendStatus(200)
 })
-app.listen(3555, () => {
-    console.log("Audioplayer is running on port 3555...")
-})
+
 
 async function Fetching(input) {
     const fetchVal = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -172,3 +171,8 @@ export const STT = {
         }
     }
 }
+
+
+app.listen(3555, () => {
+    console.log("Audioplayer is running on port 3555...")
+})
