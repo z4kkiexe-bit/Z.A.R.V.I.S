@@ -70,7 +70,7 @@ export async function Fetching(input) {
             "Content-Type":"application/json"
         },
         body:JSON.stringify({
-            model: "combo-opencode",
+            model: "combo-gemini",
             messages: [
                 {
                     role: "system",
@@ -85,7 +85,7 @@ export async function Fetching(input) {
         })
     })
     console.log(process.env.NINE_ROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBACA")
-    const response = await fetchVal.json()
+    const response = 
     console.log("STATUS:", fetchVal.status)
     console.log("OK:", fetchVal.ok)
     console.log("9ROUTER RAW:", response)
