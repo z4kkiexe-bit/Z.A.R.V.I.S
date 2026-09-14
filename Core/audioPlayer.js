@@ -196,6 +196,11 @@ export async function webSearch(query) {
                 ]
             })
         })
+        console.log(
+        process.env.NINE_ROUTER_API_KEY
+            ? "API KEY KEBACA"
+            : "API KEY TIDAK KEBACA"
+        )
 
         const data = await fetchVal.json()
         console.log("SEARCH:", data)

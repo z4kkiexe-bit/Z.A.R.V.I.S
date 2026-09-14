@@ -62,6 +62,7 @@ console.log("SETELAH APP.LISTEN...")
 
 // AI activation cmds >> .\llama-server.exe -m "C:\Users\User\Desktop\ZARVIS\LLM\LLM Models\qwen2.5-1.5b-instruct-q4_k_m.gguf" --host 127.0.0.1 --port 8081
 export async function Fetching(input) {
+    try {
     const fetchVal = await fetch("http://192.168.1.8:20128/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -79,20 +80,38 @@ export async function Fetching(input) {
                     role: "user",
                     content: input 
                 }
-            ]
+            ],
+            stream: false
         })
     })
     console.log(process.env.NINE_ROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBACA")
     const response = await fetchVal.json()
     console.log("STATUS:", fetchVal.status)
     console.log("OK:", fetchVal.ok)
+    console.log("9ROUTER RAW:", response)
+
+    if (!fetchVal.ok) {
+        throw new Error(
+            response.error?.message ||
+            response.message ||
+            `9ROUTER HTTP ${fetchVal.status}`
+        )
+    }
+    if (!content) {
+        throw new Error("Response 9router tidak terkirim..")
+    }
 
     const content = response.choices?.[0]?.message?.content
 
     console.log("AI RAW:", content)
 
     return content
+    } catch (error) {
+        console.error("FETCHING ERROR", error)
+        throw error
+    }
 }
+
 
 export async function webSearch(query) {
     const fetchVal = await fetch("http://192.168.1.8:20128/v1/search", {
