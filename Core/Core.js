@@ -85,7 +85,7 @@ export async function Fetching(input) {
         })
     })
     console.log(process.env.NINE_ROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBACA")
-    const response = 
+    const response = await fetchVal.json()
     console.log("STATUS:", fetchVal.status)
     console.log("OK:", fetchVal.ok)
     console.log("9ROUTER RAW:", response)
