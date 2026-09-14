@@ -81,7 +81,7 @@ export async function Fetching(input) {
                     content: input 
                 }
             ],
-            stream: false
+            stream: true
         })
     })
     console.log(process.env.NINE_ROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBACA")
@@ -106,7 +106,7 @@ export async function Fetching(input) {
     if (!content) {
         throw new Error("Response 9router tidak terkirim..")
     }
-    
+
     return content
     } catch (error) {
         console.error("FETCHING ERROR", error)
