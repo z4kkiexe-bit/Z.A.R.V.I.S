@@ -62,14 +62,14 @@ console.log("SETELAH APP.LISTEN...")
 
 // AI activation cmds >> .\llama-server.exe -m "C:\Users\User\Desktop\ZARVIS\LLM\LLM Models\qwen2.5-1.5b-instruct-q4_k_m.gguf" --host 127.0.0.1 --port 8081
 export async function Fetching(input) {
-    const fetchVal = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const fetchVal = await fetch("http://192.168.1.8:20128/v1/chat/completions", {
         method: "POST",
         headers: {
-            "Authorization":`Bearer ${process.env.OPENROUTER_API_KEY}`,
-            "Content-Type":"Application/json"
+            "Authorization":`Bearer ${process.env.NINE_ROUTER_API_KEY}`,
+            "Content-Type":"application/json"
         },
         body:JSON.stringify({
-            model: "openrouter/free",
+            model: "combo-opencode",
             messages: [
                 {
                     role: "system",
@@ -82,7 +82,7 @@ export async function Fetching(input) {
             ]
         })
     })
-    console.log(process.env.OPENROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBACA")
+    console.log(process.env.NINE_ROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBACA")
     const response = await fetchVal.json()
     console.log("STATUS:", fetchVal.status)
     console.log("OK:", fetchVal.ok)
@@ -94,6 +94,44 @@ export async function Fetching(input) {
     return content
 }
 
+export async function webSearch(query) {
+    const fetchVal = await fetch("http://192.168.1.8:20128/v1/search", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${process.env.NINE_ROUTER_API_KEY}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "tavily",
+                query: query,
+                max_results: 5,
+                domain_filter: [
+                    "youtube.com",
+                    "youtu.be"
+                ]
+            })
+        })
+
+        const data = await fetchVal.json()
+        console.log("SEARCH:", data)
+
+        const result = data.results?.find((item) => {
+            try {
+                const host = new URL(item.url).hostname
+                return host === "youtube.com" || host ==="www.youtube.com" || host === "youtu.be"
+            } catch {
+                return false
+            }
+        })
+        
+        if (!result) {
+            throw new Error("Video yt tidak ditemukan")
+        }
+
+        return result.url
+}
+
+
 
 
 export async function extrAudio(input) {
@@ -103,7 +141,7 @@ export async function extrAudio(input) {
     const res =  await fetch("http://192.168.1.9:5000/tts", {
         method: "POST",
         headers: {
-            "Content-Type":"Application/json"
+            "Content-Type":"application/json"
         },
         body: JSON.stringify(objjson)
     })

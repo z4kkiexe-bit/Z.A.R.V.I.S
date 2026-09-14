@@ -17,10 +17,10 @@ async function Fetching(input) {
         method: "POST",
         headers: {
             "Authorization":`Bearer ${process.env.OPENROUTER_API_KEY}`,
-            "Content-Type":"Application/json"
+            "Content-Type":"application/json"
         },
         body:JSON.stringify({
-            model: "openrouter/free",
+            model: "combo-opencode",
             messages: [
                 {
                     role: "system",
@@ -126,6 +126,13 @@ export const STT = {
 
     async sttToMusic() {
         const sttInputAi = resSTT?.toLowerCase()
+        console.log("SEARCHING...")
+        const webSearchHandler = await webSearch(sttInputAi)
+        console.log("SEARCHING SELESAI...")
+        const templateRes = await extrAudio(`Siap, lagu ${webSearchHandler.result.title} akan diputar!`)
+            await playAudioTTS(templateRes)
+            playMusic(webSearchHandler.result.url)
+        
         const arrMusic = [
             {
                 Megalovania: "https://youtu.be/63cYJbgwkoQ"
@@ -172,6 +179,45 @@ export const STT = {
     }
 }
 
+export async function webSearch(query) {
+    const fetchVal = await fetch("http://192.168.1.8:20128/v1/search", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${process.env.NINE_ROUTER_API_KEY}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "tavily",
+                query: query,
+                max_results: 5,
+                domain_filter: [
+                    "youtube.com",
+                    "youtu.be"
+                ]
+            })
+        })
+
+        const data = await fetchVal.json()
+        console.log("SEARCH:", data)
+
+        const result = data.results?.find((item) => {
+            try {
+                const host = new URL(item.url).hostname
+                return host === "youtube.com" || host ==="www.youtube.com" || host === "youtu.be"
+            } catch {
+                return false
+            }
+        })
+        
+        if (!result) {
+            throw new Error("Video yt tidak ditemukan")
+        }
+
+        return {
+                title: result.title,
+                url: result.url
+        }
+}
 
 app.listen(3555, () => {
     console.log("Audioplayer is running on port 3555...")
