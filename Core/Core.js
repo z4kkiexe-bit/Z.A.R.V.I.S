@@ -97,14 +97,16 @@ export async function Fetching(input) {
             `9ROUTER HTTP ${fetchVal.status}`
         )
     }
-    if (!content) {
-        throw new Error("Response 9router tidak terkirim..")
-    }
+    
 
     const content = response.choices?.[0]?.message?.content
 
     console.log("AI RAW:", content)
 
+    if (!content) {
+        throw new Error("Response 9router tidak terkirim..")
+    }
+    
     return content
     } catch (error) {
         console.error("FETCHING ERROR", error)
