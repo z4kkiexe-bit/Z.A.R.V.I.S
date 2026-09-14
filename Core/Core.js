@@ -81,7 +81,7 @@ export async function Fetching(input) {
                     content: input 
                 }
             ],
-            stream: true
+            stream: false
         })
     })
     console.log(process.env.NINE_ROUTER_API_KEY ? "API KEY KEBACA" : "API KEY TIDAK KEBACA")
