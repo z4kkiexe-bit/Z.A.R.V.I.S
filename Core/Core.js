@@ -70,7 +70,7 @@ export async function Fetching(input) {
             "Content-Type":"application/json"
         },
         body:JSON.stringify({
-            model: "combo-gemini",
+            model: "combo-kiro",
             messages: [
                 {
                     role: "system",
