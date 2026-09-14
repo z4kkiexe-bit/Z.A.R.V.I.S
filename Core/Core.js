@@ -99,12 +99,17 @@ export async function Fetching(input) {
     }
     
 
-    const content = response.choices?.[0]?.message?.content
+    let content = response.choices?.[0]?.message?.content
 
     console.log("AI RAW:", content)
 
     if (!content) {
         throw new Error("Response 9router tidak terkirim..")
+    }
+    
+    if (content.includes("</thinking>")) {
+        [, resultRes] = content.split("</thinking>")
+        content = resultRes
     }
 
     return content
