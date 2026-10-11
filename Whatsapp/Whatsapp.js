@@ -214,12 +214,15 @@ async function connectToWhatsApp() {
                         })
 
                     } else {
+                        await sock.sendMessage(remoteJid, {
+                            text: oValueParse.message
+                        })
+
                         for (const oFile of oValueParse.content ) {
                             const sendAIFile = await sock.sendMessage(remoteJid, {
                                 document: Buffer.from(oFile.code, "utf8"),
                                 fileName: oFile.filename,
                                 mimetype: oFile.mimetype,
-                                caption: oValueParse.message
                             });
                         }
                     }
