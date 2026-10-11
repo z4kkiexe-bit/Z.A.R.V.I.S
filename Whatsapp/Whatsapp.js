@@ -198,18 +198,20 @@ async function connectToWhatsApp() {
                         })
                     let value = await Fetching(args.trim())
                     const oValueParse = JSON.parse(value)
-                    if (oValueParse !== "file") {
+                    if (oValueParse.type !== "file") {
                         value = oValueParse.content
                         const sendAI = await sock.sendMessage(remoteJid, {
                             text: `ZARVIS-AI-SERVICES:\n${value}`,
                         })
                     } else {
-                        const sendAIFile = await sock.sendMessage(jid, {
-                            document: Buffer.from(oFile.code, "utf8"),
-                            fileName: oFile.filename,
-                            mimetype: "text/plain",
-                            caption: oValueParse.message
-                        });
+                        for (const oFile of oValueParse.content ) {
+                            const sendAIFile = await sock.sendMessage(remoteJid, {
+                                document: Buffer.from(oFile.code, "utf8"),
+                                fileName: oFile.filename,
+                                mimetype: "text/plain",
+                                caption: oValueParse.message
+                            });
+                        }
                     }
 
                     try{
