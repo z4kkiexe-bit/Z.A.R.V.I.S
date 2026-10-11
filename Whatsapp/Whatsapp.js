@@ -233,10 +233,11 @@ async function connectToWhatsApp() {
                     console.log("SETELAH EDIT...")
                     
             } catch(error) {
+                console.error("AI HANDLER ERROR:", error);
+
                 await sock.sendMessage(remoteJid, {
-                    text: "REQUEST AI GAGAL"
+                text: `REQUEST AI GAGAL: ${error.message}`
                 })
-            }
             }
 
             if (conv?.startsWith("#audiovert =>")) {
