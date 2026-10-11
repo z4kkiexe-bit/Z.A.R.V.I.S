@@ -119,6 +119,10 @@ export async function Fetching(input) {
         [, resultRes] = content.split("</thinking>")
         content = resultRes
     }
+    const vsContentParse = JSON.parse(content)
+    if (vsContentParse.type !== "file" ) {
+        content = vsContentParse.content
+    }
 
     return content
     } catch (error) {
