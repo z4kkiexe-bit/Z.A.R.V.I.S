@@ -119,6 +119,7 @@ export async function Fetching(input) {
         [, resultRes] = content.split("</thinking>")
         content = resultRes
     }
+    console.log("AI FINAL CONTENT:", content);
 
     return content
     } catch (error) {
