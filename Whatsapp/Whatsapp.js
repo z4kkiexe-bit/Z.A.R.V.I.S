@@ -218,7 +218,7 @@ async function connectToWhatsApp() {
                             const sendAIFile = await sock.sendMessage(remoteJid, {
                                 document: Buffer.from(oFile.code, "utf8"),
                                 fileName: oFile.filename,
-                                mimetype: "text/plain",
+                                mimetype: oFile.mimetype,
                                 caption: oValueParse.message
                             });
                         }
