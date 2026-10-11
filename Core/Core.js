@@ -12,7 +12,7 @@ export let resSTT;
 const FFPLAY = "C:\\Users\\User\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffplay.exe"
 
 const vsSystemPrompt = await readFile(
-    new URL("./system-prompt.txt", import.meta.url),
+    new URL("../system-prompt.txt", import.meta.url),
     "utf8"
 );
 
