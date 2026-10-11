@@ -200,9 +200,13 @@ async function connectToWhatsApp() {
                         console.log("VALUE TYPE:", typeof value);
                         console.log("VALUE:", value);
 
-                    const oValueParse = typeof value === "string"
-                        ? JSON.parse(value)
-                        : value;
+                        const vsCleanValue = typeof value === "string"
+                            ? value.replace(/^```(?:json)?\s*|\s*```$/g, "").trim()
+                            : value;
+
+                        const oValueParse = typeof vsCleanValue === "string"
+                            ? JSON.parse(vsCleanValue)
+                            : vsCleanValue;
                         
                     if (oValueParse.type !== "file") {
                         const sendAI = await sock.sendMessage(remoteJid, {
