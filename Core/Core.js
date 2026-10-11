@@ -3,10 +3,18 @@ import express from "express"
 import { spawn } from "child_process" 
 import "dotenv/config"
 import "../Whatsapp/Whatsapp.js"
+import { readFile } from "node:fs/promises"
+
+
 let server;
 const app = express()
 export let resSTT;
 const FFPLAY = "C:\\Users\\User\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffplay.exe"
+
+const vsSystemPrompt = await readFile(
+    new URL("./system-prompt.txt", import.meta.url),
+    "utf8"
+);
 
 async function coreHamdler() {
     app.use(express.json())
@@ -74,7 +82,7 @@ export async function Fetching(input) {
             messages: [
                 {
                     role: "system",
-                    content: process.env.AI_SYSTEM_PROMPT
+                    content: vsSystemPrompt
                 },
                 {
                     role: "user",
