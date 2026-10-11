@@ -200,7 +200,15 @@ async function connectToWhatsApp() {
                     const oValueParse = JSON.parse(value)
                     if (oValueParse.type !== "file") {
                         value = oValueParse.content
-                        const sendAI = await sock.sendMessage(remoteJid, {
+                        const value = await Fetching(args.trim());
+
+                            console.log("VALUE TYPE:", typeof value);
+                            console.log("VALUE:", value);
+
+                            const oValueParse = typeof value === "string"
+                                ? JSON.parse(value)
+                                : value;
+                            const sendAI = await sock.sendMessage(remoteJid, {
                             text: `ZARVIS-AI-SERVICES:\n${value}`,
                         })
                     } else {
