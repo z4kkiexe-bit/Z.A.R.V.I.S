@@ -1,11 +1,14 @@
 import express from "express"
 import { spawn } from "child_process"
+import "dotenv/config"
 
 const FFPLAY = "C:\\Users\\User\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffplay.exe"
 let resSTT;
 const app = express()
 app.use(express.json())
 app.post("/audioPlayerPC", async (req, res) => {
+    console.log("🔥 AUDIO PLAYER REQUEST:", req.body)
+
     resSTT = req.body.text
     STT.sttToMusic()
     res.sendStatus(200)
@@ -129,9 +132,9 @@ export const STT = {
         console.log("SEARCHING...")
         const webSearchHandler = await webSearch(sttInputAi)
         console.log("SEARCHING SELESAI...")
-        const templateRes = await extrAudio(`Siap, lagu ${webSearchHandler.result.title} akan diputar!`)
+        const templateRes = await extrAudio(`Siap, lagu ${webSearchHandler.title} akan diputar!`)
             await playAudioTTS(templateRes)
-            playMusic(webSearchHandler.result.url)
+            playMusic(webSearchHandler.url)
         
         const arrMusic = [
             {

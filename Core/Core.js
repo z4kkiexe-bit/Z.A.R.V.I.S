@@ -63,7 +63,7 @@ console.log("SETELAH APP.LISTEN...")
 // AI activation cmds >> .\llama-server.exe -m "C:\Users\User\Desktop\ZARVIS\LLM\LLM Models\qwen2.5-1.5b-instruct-q4_k_m.gguf" --host 127.0.0.1 --port 8081
 export async function Fetching(input) {
     try {
-    const fetchVal = await fetch("http://192.168.1.8:20128/v1/chat/completions", {
+    const fetchVal = await fetch("http://192.168.1.3:20128/v1/chat/completions", {
         method: "POST",
         headers: {
             "Authorization":`Bearer ${process.env.NINE_ROUTER_API_KEY}`,
