@@ -202,12 +202,12 @@ async function connectToWhatsApp() {
                         value = oValueParse.content
                         const value = await Fetching(args.trim());
 
-                            console.log("VALUE TYPE:", typeof value);
-                            console.log("VALUE:", value);
+                        console.log("VALUE TYPE:", typeof value);
+                        console.log("VALUE:", value);
 
-                            const oValueParse = typeof value === "string"
-                                ? JSON.parse(value)
-                                : value;
+                        const oValueParse = typeof value === "string"
+                            ? JSON.parse(value)
+                            : value;
                             const sendAI = await sock.sendMessage(remoteJid, {
                             text: `ZARVIS-AI-SERVICES:\n${value}`,
                         })
@@ -236,8 +236,9 @@ async function connectToWhatsApp() {
                 console.error("AI HANDLER ERROR:", error);
 
                 await sock.sendMessage(remoteJid, {
-                text: `REQUEST AI GAGAL: ${error.message}`
-                })
+                    text: `REQUEST AI GAGAL: ${error.message}`
+                });
+            }
             }
 
             if (conv?.startsWith("#audiovert =>")) {
