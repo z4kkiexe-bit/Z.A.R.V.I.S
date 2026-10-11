@@ -74,6 +74,7 @@ export async function Fetching(input) {
             messages: [
                 {
                     role: "system",
+                    content: process.env.AI_SYSTEM_PROMPT
                 },
                 {
                     role: "user",
