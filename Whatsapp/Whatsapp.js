@@ -196,12 +196,22 @@ async function connectToWhatsApp() {
                     const loadRes = await sock.sendMessage(remoteJid, {
                             text: "Loading response..."
                         })
-                    const value = await Fetching(args.trim())
+                    let value = await Fetching(args.trim())
+                    const oValueParse = JSON.parse(value)
+                    if (oValueParse !== "file") {
+                        value = oValueParse.content
+                        const sendAI = await sock.sendMessage(remoteJid, {
+                            text: `ZARVIS-AI-SERVICES:\n${value}`,
+                        })
+                    } else {
+                        const sendAIFile = await sock.sendMessage(jid, {
+                            document: Buffer.from(oFile.code, "utf8"),
+                            fileName: oFile.filename,
+                            mimetype: "text/plain",
+                            caption: oValueParse.message
+                        });
+                    }
 
-                    const sendAI = await sock.sendMessage(remoteJid, {
-                        text: `ZARVIS-AI-SERVICES:\n${value}`,
-                    })
-                    console.log("SEBELUM EDIT...")
                     try{
                         const loadSuccess = await sock.sendMessage(remoteJid, {
                             text: "Response loaded! ✔",
